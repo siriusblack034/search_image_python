@@ -1,0 +1,4 @@
+ - Trích rút đăng trưng
+python index.py --dataset "name folder ảnh" --index index.csv
+- Chạy chương trình
+python main.py
