@@ -1,4 +1,5 @@
  - Trích rút đăng trưng
-python index.py --dataset "name folder ảnh" --index index.csv
+python index.py --dataset dataset --index-color color.csv --index-shape shape.csv
+image.png
 - Chạy chương trình
 python main.py

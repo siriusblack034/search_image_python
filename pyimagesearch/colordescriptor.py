@@ -14,8 +14,7 @@ class ColorDescriptor:
         (cX, cY) = (int(w*0.5), int(h*0.5))  # tâm
         segments = [(0, cX, 0, cY), (cX, w, 0, cY),
                     (cX, w, cY, h), (0, cX, cY, h)]
-
-        (axesX, axesY) = (int(w * 0.75) // 2, int(h * 0.75) // 2)
+        """ (axesX, axesY) = (int(w * 0.75) // 2, int(h * 0.75) // 2) """
         radiusCircleMask = 380  # ban kinh
         circleMask = np.zeros(image.shape[:2], dtype="uint8")
         cv2.circle(circleMask, (cX, cY), radiusCircleMask, 255, -1)
@@ -28,21 +27,21 @@ class ColorDescriptor:
             hist = self.histogram(image, cornerMask)
             features.extend(hist)
         # tính hist trong vòng tròn
-        """ for(startX, endX, startY, endY) in segments:
+        for(startX, endX, startY, endY) in segments:
             rectangleMask = np.zeros(image.shape[:2], dtype='uint8')
             cv2.rectangle(rectangleMask, (startX, startY),
                           (endX, endY), 255, -1)
             cornerMask = cv2.subtract(rectangleMask, circleMask)
             quarterCircleMask = cv2.subtract(rectangleMask, cornerMask)
             hist = self.histogram(image, quarterCircleMask)
-            features.extend(hist) """
-        hist = self.histogram(image, circleMask)
-        features.extend(hist)
+            features.extend(hist)
+        """ hist = self.histogram(image, circleMask)
+        features.extend(hist) """
         return features
 
     def histogram(self, image, mask):
         hist = cv2.calcHist([image], [0, 1, 2], mask, self.bins,
-                            [0, 180, 0, 256, 0, 256])
+                            [0, 360, 0, 256, 0, 256])
         if(imutils.is_cv2()):
             hist = cv2.normalize(hist).flatten()
         else:

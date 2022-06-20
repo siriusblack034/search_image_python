@@ -35,7 +35,6 @@ class ShapeDescriptor:
                                   cell_size, cx*cell_size:cx*cell_size+cell_size]
                 mag = magnitude[cy*cell_size:cy*cell_size +
                                 cell_size, cx*cell_size:cx*cell_size+cell_size]
-                # https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html
                 hist, _ = np.histogram(ori, bins=self.bins, range=(
                     0, 180), weights=mag)  # 1-D vector, 9 elements
                 hist_tensor[cy, cx, :] = hist
