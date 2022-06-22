@@ -20,9 +20,8 @@ class Search:
         featuresShape = sd.describe(self.imagePath)
         searcherColor = Distance("color.csv")
         searcherShape = Distance("shape.csv")
-        resultsColor = searcherColor.distanceColor(featuresColor)
-        resultShape = searcherShape.distanceShape(featuresShape)
-
+        resultsColor = searcherColor.distance(featuresColor)
+        resultShape = searcherShape.distance(featuresShape)
         results = {}
         for attr, value in resultsColor.items():
             distanceColor = resultsColor[attr]
@@ -30,7 +29,7 @@ class Search:
             print(attr)
             print("     distanceColor:" + str(distanceColor))
             print("     distanceShape:" + str(distanceShape))
-            results[attr] = float((distanceColor*5 + distanceShape)/6)
+            results[attr] = float((distanceColor*4 + distanceShape)/5)
             print("     results:" + str(results[attr]))
         results = sorted([(v, k) for (k, v) in results.items()])
         return results[:10]

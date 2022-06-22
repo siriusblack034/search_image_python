@@ -15,10 +15,9 @@ class ShapeDescriptor:
         h, w = image.shape
         # gradient
         xkernel = np.array([[-1, 0, 1]])  # filter 1 chiều
-        ykernel = np.array([[-1], [0], [1]])  # chuyển vị của x
+        ykernel = np.array([[-1], [0], [1]])  # chuyển vị của y
         dx = cv2.filter2D(image, cv2.CV_32F, xkernel)  # đạo hàm theo x
         dy = cv2.filter2D(image, cv2.CV_32F, ykernel)  # đạo hàm theo y
-
         # histogram
         magnitude = np.sqrt(np.square(dx) + np.square(dy))  # tính biên độ
         # tính góc theo radian
@@ -35,7 +34,7 @@ class ShapeDescriptor:
                                   cell_size, cx*cell_size:cx*cell_size+cell_size]
                 mag = magnitude[cy*cell_size:cy*cell_size +
                                 cell_size, cx*cell_size:cx*cell_size+cell_size]
-                hist, _ = np.histogram(ori, bins=self.bins, range=(
+                hist, bin_edges = np.histogram(ori, bins=self.bins, range=(
                     0, 180), weights=mag)  # 1-D vector, 9 bins
                 hist_tensor[cy, cx, :] = hist
             pass
