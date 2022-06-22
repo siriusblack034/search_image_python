@@ -26,8 +26,8 @@ class ShapeDescriptor:
         orientation = np.degrees(orientation)  # đổi ra góc -90 -> 90
         orientation += 90  # 0->180
 
-        num_cell_x = w // cell_size  # 40 cell
-        num_cell_y = h // cell_size  # 40 cell
+        num_cell_x = w // cell_size  # 15 cell
+        num_cell_y = h // cell_size  # 15 cell
         hist_tensor = np.zeros([num_cell_y, num_cell_x, self.bins])
         for cx in range(num_cell_x):
             for cy in range(num_cell_y):
@@ -36,16 +36,17 @@ class ShapeDescriptor:
                 mag = magnitude[cy*cell_size:cy*cell_size +
                                 cell_size, cx*cell_size:cx*cell_size+cell_size]
                 hist, _ = np.histogram(ori, bins=self.bins, range=(
-                    0, 180), weights=mag)  # 1-D vector, 9 elements
+                    0, 180), weights=mag)  # 1-D vector, 9 bins
                 hist_tensor[cy, cx, :] = hist
             pass
         pass
-        # normalization
+        # normalization l2-norm
         redundant_cell = block_size-1
+        # mask 2x2 for overlap
         feature_tensor = np.zeros(
             [num_cell_y-redundant_cell, num_cell_x-redundant_cell, block_size*block_size*self.bins])
-        for bx in range(num_cell_x-redundant_cell):  # 7
-            for by in range(num_cell_y-redundant_cell):  # 15
+        for bx in range(num_cell_x-redundant_cell):  # 14
+            for by in range(num_cell_y-redundant_cell):  # 14
                 by_from = by
                 by_to = by+block_size
                 bx_from = bx
@@ -57,4 +58,4 @@ class ShapeDescriptor:
                 # avoid NaN (zero division)
                 if np.isnan(feature_tensor[by, bx, :]).any():
                     feature_tensor[by, bx, :] = v
-        return feature_tensor.flatten()
+        return feature_tensor.flatten()  # 14x14x36 = 7056 pt

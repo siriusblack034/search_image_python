@@ -1,6 +1,6 @@
 # import the necessary packages
 from pyimagesearch.colordescriptor import ColorDescriptor
-from pyimagesearch.searcher import Searcher
+from pyimagesearch.distance import Distance
 import argparse
 import cv2
 
@@ -15,16 +15,14 @@ class Search:
         cd = ColorDescriptor((8, 12, 3))
         sd = ShapeDescriptor(9)
         query = cv2.imread(self.imagePath)
+        query = cv2.resize(src=query,  dsize=(800, 800))
         featuresColor = cd.describe(query)
         featuresShape = sd.describe(self.imagePath)
-        searcherColor = Searcher("color.csv")
-        searcherShape = Searcher("shape.csv")
+        searcherColor = Distance("color.csv")
+        searcherShape = Distance("shape.csv")
         resultsColor = searcherColor.distanceColor(featuresColor)
         resultShape = searcherShape.distanceShape(featuresShape)
-        """ f = open("demofile2.txt", "a")
-        featuresShape = [str(f) for f in featuresShape]
-        f.write(str(featuresShape))
-        f.close() """
+
         results = {}
         for attr, value in resultsColor.items():
             distanceColor = resultsColor[attr]
@@ -32,8 +30,7 @@ class Search:
             print(attr)
             print("     distanceColor:" + str(distanceColor))
             print("     distanceShape:" + str(distanceShape))
-            results[attr] = float((distanceColor*4 + distanceShape)/5)
+            results[attr] = float((distanceColor*5 + distanceShape)/6)
             print("     results:" + str(results[attr]))
-
         results = sorted([(v, k) for (k, v) in results.items()])
         return results[:10]

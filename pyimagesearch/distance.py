@@ -3,7 +3,7 @@ import csv
 from scipy.spatial import distance
 
 
-class Searcher:
+class Distance:
     def __init__(self, indexPath):
         self.indexPath = indexPath
 
@@ -25,9 +25,14 @@ class Searcher:
             reader = csv.reader(f)
             # color
             for row in reader:
-                featuresCorner = [float(x) for x in row[1:]]
-                featuresCornerQuery = [float(x) for x in queryFeature[0:]]
-                results[row[0]] = distance.euclidean(
+                featuresCorner = [float(x) for x in row[1:1153]]
+                featuresCornerQuery = [float(x) for x in queryFeature[0:1152]]
+                distanceCorner = distance.euclidean(
                     featuresCorner, featuresCornerQuery)
+                featuresCircle = [float(x) for x in row[1153:]]
+                featuresCircleQuery = [float(x) for x in queryFeature[1152:]]
+                distanceCircle = distance.euclidean(
+                    featuresCircle, featuresCircleQuery)
+                results[row[0]] = (distanceCorner + distanceCircle*2)/3
             f.close()
         return results

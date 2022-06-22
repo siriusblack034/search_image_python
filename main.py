@@ -31,9 +31,7 @@ class Window(QWidget):
         vbox = QGridLayout()
         self.btn1 = QPushButton("Open Image to Search")
         self.btn1.clicked.connect(self.getImage)
-        # self.btn1.setFixedWidth(400)
         self.btn1.setFixedHeight(50)
-        # self.btn1.setStyleSheet("margin-left:100px")
         vbox.addWidget(self.btn1)
         self.label = QLabel("Ảnh tìm kiếm:")
         self.label = QLabel()
@@ -47,9 +45,8 @@ class Window(QWidget):
 
     def getImage(self):
         fname = QFileDialog.getOpenFileName(
-            self, 'Open file', 'd:\'', "Image filesz (*.jpg *.gif *.png)")
+            self, 'Open file', 'd:\'', "Image filesz (*.jpg *.gif *.png)")  # (urlFile,định dạng file)
         imagePathSearch = fname[0]
-        print(imagePathSearch)
         if(imagePathSearch):
             pixmap = QPixmap(imagePathSearch)
             search = Search(imagePathSearch)
@@ -57,7 +54,6 @@ class Window(QWidget):
             self.label.setPixmap(
                 QPixmap(pixmap.scaledToWidth(200).scaledToHeight(200))
             )
-
             # self.label.setAlignment(Qt.AlignCenter)
             self.label1.setText("Kết quả: ")
             self.label1.setFont(QFont('Times', 20))

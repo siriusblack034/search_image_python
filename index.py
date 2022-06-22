@@ -20,13 +20,8 @@ HUE_BINS = 8
 SATURATION_BINS = 12
 VALUE_BINS = 3
 cd = ColorDescriptor((HUE_BINS, SATURATION_BINS, VALUE_BINS))
-ORIENTATIONS = 9
-PIXELS_PER_CELL = (10, 10)
-CELLS_PER_BLOCK = (2, 2)
-TRANSFORM_SQRT = True
-BLOCK_NORM = "L1"
-
-sd = ShapeDescriptor(9)
+BINS = 9
+sd = ShapeDescriptor(BINS)
 # open the output index file for writing
 outputColor = open(args["index_color"], "w")
 outputShape = open(args["index_shape"], "w")
@@ -40,13 +35,10 @@ for imagePath in glob.glob(args["dataset"] + "/*.png"):
     featuresColor = cd.describe(image)
     featuresColor = [str(f) for f in featuresColor]
     outputColor.write("%s,%s\n" % (imageID, ",".join(featuresColor)))
-    imageGray = cv2.imread(imagePath, cv2.IMREAD_GRAYSCALE)
-    imageGray = cv2.resize(src=imageGray, dsize=(64, 128))
     # write the features to file
     featureShape = sd.describe("./"+imagePath)
     featureShape = [str(f) for f in featureShape]
     outputShape.write("%s,%s\n" % (imageID, ",".join(featureShape)))
-
 # close the index file
 outputColor.close()
 outputShape.close()
